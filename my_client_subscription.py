@@ -48,13 +48,15 @@ async def main():
         # We subscribe to data changes for one node (variables).
         await subscription.subscribe_data_change(nodes)
         # We let the subscription run for ten seconds
-        while True:
-            await asyncio.sleep(10)
-        # We delete the subscription (this un-subscribes from the data changes of the two variables).
-        # This is optional since closing the connection will also delete all subscriptions.
-        await subscription.delete()
-        # After one second we exit the Client context manager - this will close the connection.
-        await asyncio.sleep(1)
+        try:
+            while True:
+                await asyncio.sleep(10)
+        except (KeyboardInterrupt, SystemExit):
+            # We delete the subscription (this un-subscribes from the data changes of the two variables).
+            # This is optional since closing the connection will also delete all subscriptions.
+            await subscription.delete()
+            # After one second we exit the Client context manager - this will close the connection.
+            await asyncio.sleep(1)
 
 
 if __name__ == "__main__":

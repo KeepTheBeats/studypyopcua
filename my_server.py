@@ -1,6 +1,7 @@
 import asyncio
 import logging
 import random
+import sys
 
 from asyncua import Server
 
@@ -35,17 +36,21 @@ async def main():
 
     _logger.info("Starting server!")
     async with server:
-        while True:
-            sleep_seconds = random.randint(1, 3)
-            await asyncio.sleep(sleep_seconds)
-            old_val = await state_var.read_value()
-            new_val = ""
-            if old_val == "Good":
-                new_val = "Bad"
-            else:
-                new_val = "Good"
-            _logger.info("Set value of %s to %s", state_var, new_val)
-            await state_var.write_value(new_val)
+        try:
+            while True:
+                sleep_seconds = random.randint(1, 3)
+                await asyncio.sleep(sleep_seconds)
+                old_val = await state_var.read_value()
+                new_val = ""
+                if old_val == "Good":
+                    new_val = "Bad"
+                else:
+                    new_val = "Good"
+                _logger.info("Set value of %s to %s", state_var, new_val)
+                await state_var.write_value(new_val)
+        except (KeyboardInterrupt, SystemExit):
+            server.stop()
+            sys.exit()
 
 
 if __name__ == "__main__":
