@@ -1,5 +1,6 @@
 import asyncio
 import logging
+import random
 
 from asyncua import Server
 
@@ -35,7 +36,8 @@ async def main():
     _logger.info("Starting server!")
     async with server:
         while True:
-            await asyncio.sleep(1)
+            sleep_seconds = random.randint(1, 3)
+            await asyncio.sleep(sleep_seconds)
             old_val = await state_var.read_value()
             new_val = ""
             if old_val == "Good":
