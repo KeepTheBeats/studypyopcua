@@ -2,8 +2,9 @@ import asyncio
 import logging
 import random
 import sys
+import datetime
 
-from asyncua import Server
+from asyncua import Server, ua
 
 
 async def main():
@@ -34,6 +35,11 @@ async def main():
     _logger.info("height_var: {}".format(height_var))
     await height_var.set_writable()
 
+    ## Attempted to read the history of a value, but failed.
+    # historizing_attribute = ua.AttributeIds.Historizing
+    # historizing_value = ua.DataValue(ua.Variant(True, ua.VariantType.Boolean))
+    # await height_var.write_attribute(historizing_attribute, True)
+
     _logger.info("Starting server!")
     async with server:
         try:
@@ -48,6 +54,14 @@ async def main():
                     new_val = "Good"
                 _logger.info("Set value of %s to %s", state_var, new_val)
                 await state_var.write_value(new_val)
+
+                ## Attempted to read the history of a value, but failed.
+                # starttime = datetime.datetime.utcnow() - datetime.timedelta(
+                #     days=1)
+                # endtime_dt_format = datetime.datetime.utcnow()
+                # state_history = await state_var.read_raw_history(
+                #     starttime, endtime_dt_format)
+                # _logger.warning(state_history)
         except (KeyboardInterrupt, SystemExit):
             server.stop()
             sys.exit()

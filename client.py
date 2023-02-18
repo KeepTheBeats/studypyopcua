@@ -1,5 +1,6 @@
 import asyncio
 import logging
+import datetime
 
 from asyncua import Client
 
@@ -41,6 +42,13 @@ async def main():
         await height_var.write_value(height_val * 2)
         _logger.warning("Write height_var: {} as value: {}".format(
             height_var, height_val * 2))
+
+        ## Attempted to read the history of a value, but failed.
+        # starttime = datetime.datetime.utcnow() - datetime.timedelta(days=1)
+        # endtime_dt_format = datetime.datetime.utcnow()
+        # state_history = await height_var.read_raw_history(
+        #     starttime, endtime_dt_format)
+        # _logger.warning(state_history)
 
 
 if __name__ == "__main__":
