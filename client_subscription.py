@@ -43,7 +43,7 @@ async def main():
         handler = SubscriptionHandler()
 
         # We create a Client Subscription.
-        subscription = await client.create_subscription(500, handler)
+        subscription = await client.create_subscription(100, handler)
         nodes = [var]
         # We subscribe to data changes for one node (variables).
         await subscription.subscribe_data_change(nodes)
