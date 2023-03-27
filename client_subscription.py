@@ -42,6 +42,10 @@ async def main():
             [f"{nsidx}:Arm", f"{nsidx}:Height"])
         handler = SubscriptionHandler()
 
+        # Whether we sleep here or not, the tshark output are the same (3 packets per second), which means that, the packets captured by tshark are the routine between the server the client, while the subscription will not generate extra packets.
+        # Hence, the subscription in OPC-UA is the true subscription, not polling.
+        # await asyncio.sleep(100000)
+
         # We create a Client Subscription.
         subscription = await client.create_subscription(100, handler)
         nodes = [var]
